@@ -34,7 +34,7 @@ const getAlbums = async (
         const thumbParameters = `url=${thumbUrl}&quality=90&format=png&X-Plex-Token=${player.token}`;
         return {
           ...album,
-          thumb: `${player.server.uri}/photo/:/transcode?${thumbSize}&${thumbParameters}`,
+          thumb: `${player.address}:${player.port}/photo/:/transcode?${thumbSize}&${thumbParameters}`,
         };
       });
       const mappedMusicLibrary: LibraryItem = {

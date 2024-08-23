@@ -58,7 +58,7 @@ export async function updateMediaPlayer(mediaPlayer: MediaPlayer, commandId: num
       // TODO: this is ultra hacky, need to find where in the data the provider is
       let thumb = isTidal
         ? `https://images.plex.tv/photo/?url=${thumbUrl}`
-        : `${mediaPlayer.server.uri}/photo/:/transcode?${thumbSize}&${thumbParameters}`;
+        : `https://${mediaPlayer.address}:${mediaPlayer.port}/photo/:/transcode?${thumbSize}&${thumbParameters}`;
       mediaPlayer.metadata = {
         ...flattenMetadata(currentlyPlaying),
         thumb,
@@ -94,7 +94,7 @@ const getPlayQueues = async (mediaPlayer: MediaPlayer): Promise<Queue | undefine
   if (!mediaPlayer.containerKey) {
     return undefined;
   }
-  const response = await fetch(`${mediaPlayer.server.uri}${mediaPlayer.containerKey}`, {
+  const response = await fetch(`https://${mediaPlayer.address}:${mediaPlayer.port}${mediaPlayer.containerKey}`, {
     headers: mediaPlayerHeaders(mediaPlayer),
     method: "GET",
   });
@@ -108,7 +108,7 @@ export const getLyrics = async (mediaPlayer: MediaPlayer): Promise<Lyrics | unde
   if (!mediaPlayer.metadata?.Media.Part.Stream?.key) {
     return undefined;
   }
-  const baseUrl = `${mediaPlayer.server.uri}${mediaPlayer.metadata?.Media.Part.Stream?.key}`;
+  const baseUrl = `https://${mediaPlayer.address}:${mediaPlayer.port}${mediaPlayer.metadata?.Media.Part.Stream?.key}`;
   const response = await fetch(baseUrl, {
     headers: mediaPlayerHeaders(mediaPlayer),
     method: "GET",
